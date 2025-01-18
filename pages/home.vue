@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card style="min-height: 70vh">
       <v-tabs v-model="tab" bg-color="red-lighten-2">
         <v-tab v-for="(tab, index) in tabList" :key="index" :value="index">
           {{ tab.tabName }}</v-tab
@@ -12,23 +12,33 @@
         :items="users"
         class="elevation-1"
         item-value="name"
-        dense
-        hide-default-footer
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn icon color="blue" @click="editItem(item)">
+          <v-btn icon color="blue" @click="editar(item)">
             <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-          <v-btn icon color="red" @click="deleteItem(item)">
-            <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
       </v-data-table>
+
+      <v-row justify="end">
+        <v-col cols="auto">
+          <v-btn text color="blue" @click="transferir">Transferir</v-btn>
+          <v-btn text color="green" @click="agendar">Agendar</v-btn>
+        </v-col>
+      </v-row>
+
+      <modal-agendamento
+        v-if="modalAgendamento"
+        :agendamento="flagAgendamento"
+        @close="handleModalAgendamento"
+        @agendar="handleModalAgendamento"
+      />
     </v-card>
   </v-container>
 </template>
 
 <script>
+import { isEmpty } from "lodash";
 export default {
   name: "HomePage",
 
@@ -54,21 +64,36 @@ export default {
       ],
 
       tabList: [
-        { tabName: "Agendamento de transferências" },
+        { tabName: "Agendamentos" },
         {
           tabName: "Extrato",
         },
       ],
+
       tab: null,
+      modalAgendamento: false,
+      flagAgendamento: false,
     };
   },
 
   methods: {
-    editItem(item) {
-      alert(`Editando ${item.name}`);
+    editar(item) {
+      this.flagAgendamento = !isEmpty(item.scheduling);
+      this.handleModalAgendamento();
     },
-    deleteItem(item) {
-      alert(`Excluindo ${item.name}`);
+
+    transferir() {
+      this.flagAgendamento = false;
+      this.handleModalAgendamento();
+    },
+
+    agendar() {
+      this.flagAgendamento = true;
+      this.handleModalAgendamento();
+    },
+
+    handleModalAgendamento() {
+      this.modalAgendamento = !this.modalAgendamento;
     },
   },
 };
