@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <v-app-bar :clipped-left="clipped" fixed app>
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <img src="@/assets/icones/Logo.svg" alt="Logo" class="logo" />
       <v-spacer />
     </v-app-bar>
     <v-main>
@@ -19,21 +19,17 @@ export default {
     return {
       clipped: false,
       fixed: false,
-      items: [
-        {
-          icon: "mdi-apps",
-          title: "Welcome",
-          to: "/",
-        },
-        {
-          icon: "mdi-chart-bubble",
-          title: "Home",
-          to: "/home",
-        },
-      ],
-      right: true,
-      title: "Agendify",
     };
   },
 };
 </script>
+
+<style>
+.logo {
+  height: 100%;
+  width: auto;
+  max-height: inherit;
+  display: block;
+  margin: auto;
+}
+</style>
